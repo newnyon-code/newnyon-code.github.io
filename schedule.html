@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Scholar schedule based on the SNU CLS Education Notion page."
+    >
+    <title>Scholar Schedule | Younhyun Kim</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #171717;
+        --body: #4d4d4d;
+        --muted: #888888;
+        --paper: #fafafa;
+        --surface: #ffffff;
+        --surface-soft: #fafafa;
+        --surface-soft-2: #f5f5f5;
+        --accent: #171717;
+        --accent-strong: #000000;
+        --line: #ebebeb;
+        --line-strong: #a1a1a1;
+        --link: #0070f3;
+        --link-deep: #0761d1;
+        --shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.08) inset,
+          0 1px 1px rgba(0, 0, 0, 0.02),
+          0 2px 2px rgba(0, 0, 0, 0.04);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Geist, Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-feature-settings: "ss01", "ss02";
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration-thickness: 0.08em;
+        text-underline-offset: 0.18em;
+      }
+
+      a:hover {
+        color: var(--link-deep);
+      }
+
+      a:focus-visible {
+        outline: 3px solid rgba(0, 112, 243, 0.28);
+        outline-offset: 4px;
+      }
+
+      ::selection {
+        background: var(--ink);
+        color: #f2f2f2;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        z-index: 10;
+        transform: translateY(-150%);
+        border-radius: 6px;
+        background: var(--ink);
+        color: #ffffff;
+        padding: 0.65rem 0.85rem;
+        text-decoration: none;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav,
+      main,
+      .site-footer {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 64px;
+        padding: 0.75rem 0;
+      }
+
+      .brand {
+        color: var(--ink);
+        font-weight: 600;
+        letter-spacing: 0;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .nav-links a {
+        border-radius: 999px;
+        color: var(--body);
+        font-size: 0.875rem;
+        font-weight: 400;
+        padding: 0.35rem 0.65rem;
+        text-decoration: none;
+      }
+
+      .nav-links a:hover,
+      .nav-links a[aria-current="page"] {
+        background: var(--surface-soft-2);
+        color: var(--ink);
+      }
+
+      .page-hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 0.72fr) minmax(280px, 0.28fr);
+        align-items: end;
+        gap: clamp(2rem, 6vw, 5rem);
+        overflow: hidden;
+        padding: 5rem 0 4rem;
+      }
+
+      .page-hero::before {
+        position: absolute;
+        inset: 8% 0 auto;
+        z-index: -1;
+        height: min(24rem, 46vw);
+        border-radius: 16px;
+        background:
+          radial-gradient(circle at 18% 28%, rgba(80, 227, 194, 0.22), transparent 31%),
+          radial-gradient(circle at 48% 20%, rgba(0, 124, 240, 0.22), transparent 33%),
+          radial-gradient(circle at 78% 34%, rgba(255, 0, 128, 0.17), transparent 29%),
+          radial-gradient(circle at 62% 76%, rgba(249, 203, 40, 0.18), transparent 27%);
+        content: "";
+        filter: blur(32px);
+      }
+
+      .eyebrow {
+        margin: 0 0 0.9rem;
+        color: var(--muted);
+        font-family:
+          "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+        font-size: 0.82rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 12ch;
+        font-size: 4.5rem;
+        font-weight: 600;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+      }
+
+      h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .lead {
+        max-width: 68ch;
+        margin: 1.35rem 0 0;
+        color: var(--body);
+        font-size: 1.125rem;
+        line-height: 1.55;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        margin-top: 2rem;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 2.9rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        padding: 0.65rem 1rem;
+        background: var(--accent);
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        background: var(--accent-strong);
+        color: #ffffff;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        background: var(--surface);
+        color: var(--ink);
+      }
+
+      .button.secondary:hover {
+        border-color: var(--line-strong);
+        color: var(--ink);
+      }
+
+      .source-box {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        padding: 1.25rem;
+        box-shadow: var(--shadow);
+      }
+
+      .source-label {
+        margin: 0;
+        font-family:
+          "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+        color: var(--muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+      }
+
+      .source-link {
+        display: inline-flex;
+        margin-top: 0.85rem;
+        color: var(--ink);
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .source-link:hover {
+        color: var(--link);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: clamp(2rem, 5vw, 3rem);
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        padding: 1rem;
+        box-shadow: var(--shadow);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 2.25rem;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--body);
+      }
+
+      .section {
+        padding: clamp(3rem, 7vw, 5rem) 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.28fr) minmax(0, 0.72fr);
+        gap: clamp(1.5rem, 5vw, 4rem);
+      }
+
+      .section-kicker {
+        margin: 0.65rem 0 0;
+        color: var(--muted);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        scrollbar-color: var(--line-strong) transparent;
+      }
+
+      table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+
+      caption {
+        padding: 1rem 1rem 0.85rem;
+        color: var(--muted);
+        text-align: left;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 0.9rem 1rem;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-soft);
+        color: var(--muted);
+        font-family:
+          "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+        font-size: 0.82rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      thead th {
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      tbody th {
+        background: transparent;
+        color: var(--ink);
+        font-size: inherit;
+        font-weight: 500;
+        text-transform: none;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tr:last-child th {
+        border-bottom: 0;
+      }
+
+      tbody tr:hover {
+        background: var(--surface-soft-2);
+      }
+
+      .course-title {
+        display: block;
+        font-weight: 500;
+      }
+
+      .course-subtitle {
+        display: block;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 0.18rem 0.55rem;
+        background: var(--surface-soft);
+        color: var(--accent);
+        font-size: 0.84rem;
+        font-weight: 500;
+      }
+
+      .requirement-note {
+        max-width: 24rem;
+      }
+
+      .requirements-table {
+        min-width: 1040px;
+      }
+
+      .requirements-table col:nth-child(1) {
+        width: 14%;
+      }
+
+      .requirements-table col:nth-child(2) {
+        width: 22%;
+      }
+
+      .requirements-table col:nth-child(3) {
+        width: 8%;
+      }
+
+      .requirements-table col:nth-child(4) {
+        width: 18%;
+      }
+
+      .requirements-table col:nth-child(5) {
+        width: 24%;
+      }
+
+      .requirements-table col:nth-child(6) {
+        width: 14%;
+      }
+
+      .requirements-table tbody tr {
+        background: var(--surface);
+      }
+
+      .requirements-table tbody tr:nth-child(even) {
+        background: var(--surface-soft);
+      }
+
+      .requirements-table .row-major th,
+      .requirements-table .row-major td {
+        border-top: 1px solid var(--line-strong);
+        background: var(--surface-soft-2);
+      }
+
+      .requirements-table .row-major th {
+        color: var(--accent-strong);
+      }
+
+      .area-label {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.15rem 0.55rem;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 500;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+
+      .row-major .area-label {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: #ffffff;
+      }
+
+      .requirement-title {
+        display: block;
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .requirement-detail {
+        display: block;
+        margin-top: 0.18rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .credit {
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+
+      .empty {
+        color: var(--muted);
+      }
+
+      .progress {
+        display: grid;
+        gap: 0.38rem;
+        min-width: 7rem;
+      }
+
+      .progress-label {
+        color: var(--ink);
+        font-size: 0.88rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 500;
+      }
+
+      .progress-track {
+        display: block;
+        width: 100%;
+        height: 0.5rem;
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: var(--surface-soft-2);
+      }
+
+      .progress-bar {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--accent);
+      }
+
+      .site-footer {
+        padding: 2rem 0 2.5rem;
+        border-top: 1px solid var(--line);
+        color: var(--body);
+        font-size: 0.875rem;
+      }
+
+      @media (max-width: 780px) {
+        .site-header {
+          position: static;
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          gap: 0.55rem 1rem;
+        }
+
+        .page-hero,
+        .section-grid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 3.25rem;
+        }
+
+        h2 {
+          font-size: 2rem;
+        }
+
+        .lead {
+          font-size: 1.0625rem;
+        }
+
+        .stat strong {
+          font-size: 2rem;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .nav,
+        main,
+        .site-footer {
+          width: min(100% - 1.2rem, 1120px);
+        }
+
+        h1 {
+          font-size: 2.55rem;
+        }
+
+        h2 {
+          font-size: 1.85rem;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="index.html">Younhyun Kim</a>
+        <ul class="nav-links">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#work">Work</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="#courses" aria-current="page">Courses</a></li>
+          <li><a href="index.html#cv">CV</a></li>
+          <li><a href="index.html#ai-usage">AI Usage</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="page-hero" aria-labelledby="schedule-heading">
+        <div>
+          <p class="eyebrow">SNU CLS Education</p>
+          <h1 id="schedule-heading">Scholar Schedule</h1>
+          <p class="lead">
+            A static academic schedule built from the public Notion source,
+            organized around the 2026-1 semester course load and
+            학부대학(자유전공학부) 이수규정.
+          </p>
+          <div class="hero-actions" aria-label="Schedule sections">
+            <a class="button" href="#requirements">View requirements</a>
+            <a class="button secondary" href="#courses">View courses</a>
+          </div>
+        </div>
+        <aside class="source-box" aria-label="Schedule source">
+          <p class="source-label">Source</p>
+          <a
+            class="source-link"
+            href="https://www.notion.so/SNU-CLS-Education-1a59fbcc7ff980208315d2ee33053a3e?source=copy_link"
+          >SNU CLS Education Notion</a>
+        </aside>
+      </section>
+
+      <section aria-label="Schedule summary">
+        <div class="stats">
+          <div class="stat">
+            <strong>7</strong>
+            <span>courses referenced</span>
+          </div>
+          <div class="stat">
+            <strong>19</strong>
+            <span>listed credits</span>
+          </div>
+          <div class="stat">
+            <strong>2026-1</strong>
+            <span>semester plan</span>
+          </div>
+          <div class="stat">
+            <strong>20</strong>
+            <span>requirement rows</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="courses" aria-labelledby="courses-heading">
+        <div class="section-grid">
+          <div>
+            <p class="eyebrow">Courses</p>
+            <h2 id="courses-heading">Current course load</h2>
+            <p class="section-kicker">
+              Semester-3 rows from the Notion Courses database.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table class="course-table">
+              <caption>
+                Course data includes course number, course name, professor,
+                category, and credits where listed in Notion.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Course</th>
+                  <th scope="col">Number</th>
+                  <th scope="col">Professor</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Credits</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">Linear Algebra 1</span>
+                    <span class="course-subtitle">선형대수학 1</span>
+                  </th>
+                  <td>300.203A (001)</td>
+                  <td>김도형</td>
+                  <td><span class="badge">전필</span></td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">College Writing 2: Science</span>
+                    <span class="course-subtitle">
+                      대학글쓰기 2: 과학기술글쓰기
+                    </span>
+                  </th>
+                  <td>F11.203 (011)</td>
+                  <td>조수남</td>
+                  <td><span class="badge">교양</span></td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">
+                      Engineering Mathematics 1
+                    </span>
+                    <span class="course-subtitle">공학수학 1</span>
+                  </th>
+                  <td>F31.201 (013)</td>
+                  <td>송용수</td>
+                  <td><span class="badge">교양</span></td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">Mathematical Analysis 1</span>
+                    <span class="course-subtitle">해석개론 및 연습 1</span>
+                  </th>
+                  <td>M1407.000600 (001)</td>
+                  <td>이상혁</td>
+                  <td><span class="badge">전필</span></td>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">Computer Programing</span>
+                    <span class="course-subtitle">컴퓨터 프로그래밍</span>
+                  </th>
+                  <td>M1522.000600 (001)</td>
+                  <td>유영재</td>
+                  <td><span class="badge">전선</span></td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">Statistics Practice</span>
+                    <span class="course-subtitle">통계학실험</span>
+                  </th>
+                  <td>F32.102L. (014)</td>
+                  <td>이선순</td>
+                  <td><span class="badge">교양</span></td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="course-title">Statistics</span>
+                    <span class="course-subtitle">통계학</span>
+                  </th>
+                  <td>F32.102 (004)</td>
+                  <td>한상미</td>
+                  <td><span class="badge">교양</span></td>
+                  <td>3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section"
+        id="requirements"
+        aria-labelledby="requirements-heading"
+      >
+        <div class="section-grid">
+          <div>
+            <p class="eyebrow">Requirements</p>
+            <h2 id="requirements-heading">학부대학(자유전공학부) 이수규정</h2>
+            <p class="section-kicker">
+              Requirement rows from the Notion database under
+              공통교육과정 이수규정.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table class="requirements-table">
+              <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+              </colgroup>
+              <caption>
+                Columns mirror the Notion database: 영역, 이름, 학점, 이수현황,
+                비고, and 진행률 where available.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">영역</th>
+                  <th scope="col">이름</th>
+                  <th scope="col">학점</th>
+                  <th scope="col">이수현황</th>
+                  <th scope="col">비고</th>
+                  <th scope="col">진행률</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-major">
+                  <td><span class="area-label">교양</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">교양 이수규정</span>
+                    <span class="requirement-detail">General education</span>
+                  </th>
+                  <td><span class="credit">36</span></td>
+                  <td>25/36</td>
+                  <td>36학점 이상</td>
+                  <td>
+                    <span class="progress" aria-label="69.4 percent complete">
+                      <span class="progress-label">69.4%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 69.4%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">학문의 토대</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">학문의 토대</span>
+                    <span class="requirement-detail">Foundation courses</span>
+                  </th>
+                  <td><span class="credit">16</span></td>
+                  <td>14/16</td>
+                  <td><span class="empty">-</span></td>
+                  <td>
+                    <span class="progress" aria-label="87.5 percent complete">
+                      <span class="progress-label">87.5%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 87.5%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">학문의 토대</span></td>
+                  <th scope="row">글쓰기와 말하기</th>
+                  <td><span class="credit">4</span></td>
+                  <td>대글1(2)</td>
+                  <td>대글1 이후 대글2 수강 가능</td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">학문의 토대</span></td>
+                  <th scope="row">외국어</th>
+                  <td><span class="credit">6</span></td>
+                  <td>대영1(3), 초독1(3)</td>
+                  <td>TEPS 성적따라 영어 필수 이수</td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">학문의 토대</span></td>
+                  <th scope="row">수학과학컴퓨팅</th>
+                  <td><span class="credit">6</span></td>
+                  <td>수학1(2), 수연1(1), 컴핵(3)</td>
+                  <td>수학1+수학연습1/이론+실험</td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">지성의 열쇠</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">지성의 열쇠</span>
+                    <span class="requirement-detail">Three areas, 9 credits</span>
+                  </th>
+                  <td><span class="credit">9</span></td>
+                  <td>6/9</td>
+                  <td>3개 영역 이상 9학점 이상</td>
+                  <td>
+                    <span class="progress" aria-label="66.7 percent complete">
+                      <span class="progress-label">66.7%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 66.7%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">지성의 열쇠</span></td>
+                  <th scope="row">문화 해석과 상상</th>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">지성의 열쇠</span></td>
+                  <th scope="row">역사적 탐구와 철학적 사유</th>
+                  <td><span class="empty">-</span></td>
+                  <td>논리학(3)</td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">지성의 열쇠</span></td>
+                  <th scope="row">인간의 이해와 사회 분석</th>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">지성의 열쇠</span></td>
+                  <th scope="row">과학적 사고와 응용</th>
+                  <td><span class="empty">-</span></td>
+                  <td>과비사(3)</td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">베리타스</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">베리타스</span>
+                    <span class="requirement-detail">Required Veritas credits</span>
+                  </th>
+                  <td><span class="credit">3</span></td>
+                  <td>3/3</td>
+                  <td>3학점 이상</td>
+                  <td>
+                    <span class="progress" aria-label="100 percent complete">
+                      <span class="progress-label">100%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 100%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">베리타스</span></td>
+                  <th scope="row">베리타스 강좌 1</th>
+                  <td><span class="empty">-</span></td>
+                  <td>빅 히스토리(3)</td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">베리타스</span></td>
+                  <th scope="row">베리타스 강좌 2</th>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">베리타스</span></td>
+                  <th scope="row">베리타스 실천</th>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                  <td><span class="empty">-</span></td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">전체 교양</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">전체 교양 교과목</span>
+                    <span class="requirement-detail">Social service required</span>
+                  </th>
+                  <td><span class="credit">8</span></td>
+                  <td>2/8 신세(1), 사회봉사1(1)</td>
+                  <td>‘사회봉사 1’ 필수 수강</td>
+                  <td>
+                    <span class="progress" aria-label="25 percent complete">
+                      <span class="progress-label">25%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 25%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">자유전공학부</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">
+                      자유전공학부 전공 이수 : 15
+                    </span>
+                    <span class="requirement-detail">Major requirements</span>
+                  </th>
+                  <td><span class="credit">15</span></td>
+                  <td>9/15</td>
+                  <td><span class="empty">-</span></td>
+                  <td>
+                    <span class="progress" aria-label="60 percent complete">
+                      <span class="progress-label">60%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 60%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">전공필수</span></td>
+                  <th scope="row">주제탐구세미나1, 전공설계1</th>
+                  <td><span class="credit">5</span></td>
+                  <td>5/5</td>
+                  <td><span class="empty">-</span></td>
+                  <td>
+                    <span class="progress" aria-label="100 percent complete">
+                      <span class="progress-label">100%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 100%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">필수전선</span></td>
+                  <th scope="row">주제탐구세미나2</th>
+                  <td><span class="credit">3</span></td>
+                  <td>3/3</td>
+                  <td><span class="empty">-</span></td>
+                  <td>
+                    <span class="progress" aria-label="100 percent complete">
+                      <span class="progress-label">100%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 100%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="area-label">전공선택</span></td>
+                  <th scope="row">전공설계2</th>
+                  <td><span class="credit">4</span></td>
+                  <td>1/4</td>
+                  <td><span class="empty">-</span></td>
+                  <td>
+                    <span class="progress" aria-label="25 percent complete">
+                      <span class="progress-label">25%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 25%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr class="row-major">
+                  <td><span class="area-label">졸업 요건</span></td>
+                  <th scope="row">
+                    <span class="requirement-title">기타 졸업 요건</span>
+                    <span class="requirement-detail">Graduation checklist</span>
+                  </th>
+                  <td><span class="empty">-</span></td>
+                  <td>3/7</td>
+                  <td class="requirement-note">
+                    8학기 이상 등록, 전공진입 후 4학기 경과, 130학점 이상
+                    이수, 전 과목 평점평균 2.0 이상V, 사회봉사1 이수V,
+                    TEPS 900점 이하 영어 이수V, 졸업논문 제출
+                  </td>
+                  <td>
+                    <span class="progress" aria-label="42.9 percent complete">
+                      <span class="progress-label">42.9%</span>
+                      <span class="progress-track" aria-hidden="true">
+                        <span class="progress-bar" style="width: 42.9%"></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Younhyun Kim.</p>
+    </footer>
+  </body>
+</html>

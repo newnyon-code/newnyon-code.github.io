@@ -5,21 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Personal website for newnyon with profile, selected work, and CV."
+      content="Personal website for Younhyun Kim, Seoul National University student, with research interests, selected experience, and CV."
     >
-    <title>newnyon | Personal Website</title>
+    <title>Younhyun Kim | Personal Website</title>
     <style>
       :root {
         color-scheme: light;
-        --ink: #18212f;
-        --muted: #5c6676;
-        --paper: #f8f6f0;
+        --ink: #171717;
+        --body: #4d4d4d;
+        --muted: #888888;
+        --paper: #fafafa;
         --surface: #ffffff;
-        --accent: #0f6b68;
-        --accent-strong: #0a4d4a;
-        --line: #d8d4ca;
-        --warm: #b4572a;
-        --shadow: 0 18px 45px rgba(24, 33, 47, 0.12);
+        --surface-soft: #fafafa;
+        --surface-soft-2: #f5f5f5;
+        --accent: #171717;
+        --accent-strong: #000000;
+        --line: #ebebeb;
+        --line-strong: #a1a1a1;
+        --link: #0070f3;
+        --link-deep: #0761d1;
+        --shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.08) inset,
+          0 1px 1px rgba(0, 0, 0, 0.02),
+          0 2px 2px rgba(0, 0, 0, 0.04);
       }
 
       * {
@@ -35,25 +43,31 @@
         background: var(--paper);
         color: var(--ink);
         font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+          Geist, Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-feature-settings: "ss01", "ss02";
         font-size: 16px;
-        line-height: 1.65;
+        line-height: 1.5;
+      }
+
+      ::selection {
+        background: var(--ink);
+        color: #f2f2f2;
       }
 
       a {
-        color: var(--accent-strong);
+        color: var(--link);
         text-decoration-thickness: 0.08em;
         text-underline-offset: 0.18em;
       }
 
       a:hover {
-        color: var(--warm);
+        color: var(--link-deep);
       }
 
       a:focus-visible,
       button:focus-visible {
-        outline: 3px solid rgba(15, 107, 104, 0.35);
+        outline: 3px solid rgba(0, 112, 243, 0.28);
         outline-offset: 4px;
       }
 
@@ -71,7 +85,7 @@
         border-radius: 6px;
         background: var(--ink);
         color: #ffffff;
-        padding: 0.65rem 0.85rem;
+        padding: 0.6rem 0.8rem;
         text-decoration: none;
       }
 
@@ -83,8 +97,8 @@
         position: sticky;
         top: 0;
         z-index: 5;
-        border-bottom: 1px solid rgba(216, 212, 202, 0.82);
-        background: rgba(248, 246, 240, 0.93);
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(12px);
       }
 
@@ -95,12 +109,13 @@
         gap: 1rem;
         width: min(1120px, calc(100% - 2rem));
         margin: 0 auto;
-        padding: 0.9rem 0;
+        min-height: 64px;
+        padding: 0.75rem 0;
       }
 
       .brand {
         color: var(--ink);
-        font-weight: 800;
+        font-weight: 600;
         letter-spacing: 0;
         text-decoration: none;
       }
@@ -108,21 +123,24 @@
       .nav-links {
         display: flex;
         align-items: center;
-        gap: clamp(0.75rem, 2vw, 1.35rem);
+        gap: 0.5rem;
         margin: 0;
         padding: 0;
         list-style: none;
       }
 
       .nav-links a {
-        color: var(--muted);
-        font-size: 0.95rem;
-        font-weight: 650;
+        border-radius: 999px;
+        color: var(--body);
+        font-size: 0.875rem;
+        font-weight: 400;
+        padding: 0.35rem 0.65rem;
         text-decoration: none;
       }
 
       .nav-links a:hover {
-        color: var(--accent-strong);
+        background: var(--surface-soft-2);
+        color: var(--ink);
       }
 
       main {
@@ -131,20 +149,39 @@
       }
 
       .hero {
+        position: relative;
         display: grid;
         grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.72fr);
         align-items: center;
         gap: clamp(2rem, 6vw, 5rem);
+        overflow: hidden;
         min-height: calc(100vh - 4.25rem);
         padding: clamp(3rem, 7vw, 6rem) 0;
       }
 
+      .hero::before {
+        position: absolute;
+        inset: 8% 0 auto;
+        z-index: -1;
+        height: min(28rem, 46vw);
+        border-radius: 16px;
+        background:
+          radial-gradient(circle at 20% 30%, rgba(80, 227, 194, 0.28), transparent 32%),
+          radial-gradient(circle at 50% 20%, rgba(0, 124, 240, 0.25), transparent 34%),
+          radial-gradient(circle at 74% 34%, rgba(255, 0, 128, 0.2), transparent 30%),
+          radial-gradient(circle at 62% 78%, rgba(249, 203, 40, 0.22), transparent 28%);
+        content: "";
+        filter: blur(32px);
+      }
+
       .eyebrow {
         margin: 0 0 0.9rem;
-        color: var(--warm);
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
+        color: var(--muted);
+        font-family:
+          "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0;
         text-transform: uppercase;
       }
 
@@ -152,28 +189,32 @@
       h2,
       h3 {
         margin: 0;
-        line-height: 1.12;
+        line-height: 1;
         letter-spacing: 0;
       }
 
       h1 {
         max-width: 12ch;
-        font-size: clamp(2.8rem, 8vw, 5.6rem);
+        font-size: 5rem;
+        font-weight: 600;
       }
 
       h2 {
-        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-size: 2.5rem;
+        font-weight: 600;
       }
 
       h3 {
-        font-size: 1.08rem;
+        font-size: 1.05rem;
+        font-weight: 600;
       }
 
       .lead {
         max-width: 62ch;
         margin: 1.35rem 0 0;
-        color: var(--muted);
-        font-size: clamp(1.08rem, 2vw, 1.28rem);
+        color: var(--body);
+        font-size: 1.125rem;
+        line-height: 1.55;
       }
 
       .actions {
@@ -189,11 +230,12 @@
         align-items: center;
         justify-content: center;
         border: 1px solid var(--accent);
-        border-radius: 8px;
-        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        padding: 0.65rem 1rem;
         background: var(--accent);
         color: #ffffff;
-        font-weight: 750;
+        font-size: 0.95rem;
+        font-weight: 500;
         text-decoration: none;
       }
 
@@ -203,13 +245,14 @@
       }
 
       .button.secondary {
-        background: transparent;
-        color: var(--accent-strong);
+        background: var(--surface);
+        border-color: var(--line);
+        color: var(--ink);
       }
 
       .button.secondary:hover {
-        border-color: var(--warm);
-        color: var(--warm);
+        border-color: var(--line-strong);
+        color: var(--ink);
       }
 
       .portrait-wrap {
@@ -217,18 +260,19 @@
       }
 
       .portrait {
-        width: min(100%, 390px);
+        width: min(100%, 360px);
         margin-left: auto;
         border: 1px solid var(--line);
-        border-radius: 8px;
-        aspect-ratio: 4 / 5;
+        border-radius: 12px;
+        aspect-ratio: 1 / 1.12;
         background: var(--surface);
         box-shadow: var(--shadow);
         object-fit: cover;
+        object-position: center 28%;
       }
 
       .section {
-        padding: clamp(3rem, 7vw, 5rem) 0;
+        padding: clamp(4rem, 9vw, 6rem) 0;
         border-top: 1px solid var(--line);
       }
 
@@ -245,46 +289,106 @@
 
       .content-stack {
         display: grid;
-        gap: 1.25rem;
+        gap: 1rem;
       }
 
       .content-stack p {
         margin: 0;
       }
 
-      .work-list {
+      .work-list,
+      .project-list {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1rem;
       }
 
-      .work-item {
+      .work-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+
+      .work-item,
+      .project-item {
         min-height: 12rem;
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: var(--surface);
-        padding: 1.15rem;
+        background: var(--surface-soft);
+        padding: 1.25rem;
       }
 
-      .work-item p {
+      .work-item p,
+      .project-item p {
         margin: 0.7rem 0 0;
-        color: var(--muted);
+        color: var(--body);
+      }
+
+      .project-link {
+        display: inline-flex;
+        margin-top: 1rem;
+        font-weight: 500;
       }
 
       .cv-panel {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1.5rem;
+        display: grid;
+        align-items: start;
+        gap: 1.25rem;
         border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
+        border-radius: 12px;
+        background: var(--surface-soft);
         padding: clamp(1.25rem, 3vw, 2rem);
       }
 
       .cv-panel p {
         margin: 0.45rem 0 0;
+        color: var(--body);
+      }
+
+      .resume-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .resume-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        padding: 1rem;
+      }
+
+      .resume-item p {
+        margin: 0.55rem 0 0;
+        color: var(--body);
+      }
+
+      .ai-usage-panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface-soft);
+        padding: clamp(1.25rem, 3vw, 2rem);
+      }
+
+      .ai-usage-panel dl {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+      }
+
+      .ai-usage-panel dt {
+        font-family:
+          "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
         color: var(--muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+      }
+
+      .ai-usage-panel dd {
+        margin: 0.35rem 0 0;
+        color: var(--body);
       }
 
       .contact-list {
@@ -301,8 +405,8 @@
         margin: 0 auto;
         padding: 2rem 0 2.5rem;
         border-top: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 0.92rem;
+        color: var(--body);
+        font-size: 0.875rem;
       }
 
       @media (max-width: 780px) {
@@ -327,7 +431,9 @@
 
         .hero,
         .section-grid,
-        .work-list {
+        .work-list,
+        .project-list,
+        .resume-grid {
           grid-template-columns: 1fr;
         }
 
@@ -335,14 +441,25 @@
           min-height: auto;
         }
 
+        h1 {
+          font-size: 3.5rem;
+        }
+
+        h2 {
+          font-size: 2rem;
+        }
+
+        .lead {
+          font-size: 1.0625rem;
+        }
+
         .portrait {
-          width: min(100%, 340px);
+          width: min(100%, 320px);
           margin: 0;
         }
 
         .cv-panel {
-          align-items: flex-start;
-          flex-direction: column;
+          align-items: stretch;
         }
       }
 
@@ -359,7 +476,11 @@
         }
 
         h1 {
-          font-size: 2.55rem;
+          font-size: 2.75rem;
+        }
+
+        h2 {
+          font-size: 1.85rem;
         }
 
         .button {
@@ -381,11 +502,14 @@
 
     <header class="site-header">
       <nav class="nav" aria-label="Primary navigation">
-        <a class="brand" href="#">newnyon</a>
+        <a class="brand" href="#">Younhyun Kim</a>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#work">Work</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="schedule.html#courses">Courses</a></li>
           <li><a href="#cv">CV</a></li>
+          <li><a href="#ai-usage">AI Usage</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -394,14 +518,15 @@
     <main id="main-content">
       <section class="hero" aria-labelledby="intro-heading">
         <div>
-          <p class="eyebrow">Personal Website</p>
-          <h1 id="intro-heading">newnyon</h1>
+          <p class="eyebrow">Seoul National University</p>
+          <h1 id="intro-heading">Younhyun Kim</h1>
           <p class="lead">
-            A simple home for my work, background, and current CV. I use this
-            space to share projects, notes, and ways to get in touch.
+            College of Liberal Studies student interested in data science,
+            Fourier analysis, and the Riemann zeta function.
           </p>
           <div class="actions" aria-label="Primary links">
             <a class="button" href="assets/cv.pdf">View CV</a>
+            <a class="button secondary" href="schedule.html">View schedule</a>
             <a class="button secondary" href="#contact">Get in touch</a>
           </div>
         </div>
@@ -410,7 +535,7 @@
           <img
             class="portrait"
             src="assets/profile.jpg"
-            alt="Profile portrait of newnyon"
+            alt="Profile portrait of Younhyun Kim"
             width="600"
             height="750"
           >
@@ -421,21 +546,20 @@
         <div class="section-grid">
           <div>
             <p class="eyebrow">About</p>
-            <h2 id="about-heading">Focused, practical, and curious.</h2>
+            <h2 id="about-heading">Studying computer science and mathematics.</h2>
             <p class="section-kicker">
-              A compact overview of my interests and current work.
+              Liberal Studies - Mathematics &amp; Computer Science.
             </p>
           </div>
           <div class="content-stack">
             <p>
-              I care about building clear, useful things and explaining the work
-              behind them. This page collects a short overview, selected areas
-              of work, and a CV for more detail.
+              I am Younhyun Kim, studying Liberal Studies - Mathematics &amp;
+              Computer Science at Seoul National University.
             </p>
             <p>
-              I enjoy work that connects careful thinking with practical
-              implementation, from early experiments to tools that people can
-              actually use.
+              I am interested in analysis, topology, and differential geometry
+              in mathematics, and in large language models, automata theory, AI,
+              and quantum computing in computer science.
             </p>
           </div>
         </div>
@@ -445,29 +569,51 @@
         <div class="section-grid">
           <div>
             <p class="eyebrow">Work</p>
-            <h2 id="work-heading">Selected areas</h2>
+            <h2 id="work-heading">Research and skills</h2>
           </div>
           <div class="work-list" role="list">
             <article class="work-item" role="listitem">
-              <h3>Software</h3>
+              <h3>Research Interests</h3>
               <p>
-                Building small, reliable tools and interfaces with attention to
-                clarity and long-term maintainability.
+                Data science, Fourier analysis, and the Riemann zeta function.
               </p>
             </article>
             <article class="work-item" role="listitem">
-              <h3>Research</h3>
+              <h3>Skills and Study</h3>
               <p>
-                Exploring technical ideas, documenting findings, and turning
-                experiments into practical artifacts.
+                Python, Java, C, C++, and Rust study, alongside TOEIC, JLPT, and
+                HSK preparation.
               </p>
             </article>
-            <article class="work-item" role="listitem">
-              <h3>Writing</h3>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="projects" aria-labelledby="projects-heading">
+        <div class="section-grid">
+          <div>
+            <p class="eyebrow">Projects</p>
+            <h2 id="projects-heading">Selected projects</h2>
+          </div>
+          <div class="project-list" role="list">
+            <article class="project-item" role="listitem">
+              <h3>DGIST 2023 Pre-URP</h3>
               <p>
-                Sharing concise notes, project context, and lessons learned from
-                the work in progress.
+                Research student at DGIST for a 2023 Pre-URP project on a
+                differential geometric approach to the Euler-Lagrange equation
+                with geodesics.
               </p>
+            </article>
+            <article class="project-item" role="listitem">
+              <h3>College Writing 2 Assignment Website</h3>
+              <p>
+                Website project for College Writing 2 assignments in 2026,
+                focused on Fourier-related writing and presentation.
+              </p>
+              <a
+                class="project-link"
+                href="https://fourier-web-mauve.vercel.app/"
+              >fourier-web-mauve.vercel.app</a>
             </article>
           </div>
         </div>
@@ -483,10 +629,59 @@
             <div>
               <h3>Curriculum vitae</h3>
               <p>
-                Download or open the latest CV as a PDF.
+                A concise resume overview with education, skills, and
+                experience. The full PDF is also available.
               </p>
             </div>
+            <div class="resume-grid" role="list">
+              <article class="resume-item" role="listitem">
+                <h3>Education</h3>
+                <p>
+                  Seoul National University, Liberal Studies - Mathematics &amp;
+                  Computer Science.
+                </p>
+              </article>
+              <article class="resume-item" role="listitem">
+                <h3>Skills</h3>
+                <p>
+                  Python, Java, C, C++, Rust study, mathematical analysis, and
+                  research writing.
+                </p>
+              </article>
+              <article class="resume-item" role="listitem">
+                <h3>Experience</h3>
+                <p>
+                  DGIST 2023 Pre-URP research student on a differential
+                  geometric approach to the Euler-Lagrange equation.
+                </p>
+              </article>
+            </div>
             <a class="button" href="assets/cv.pdf">Open CV PDF</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="ai-usage" aria-labelledby="ai-usage-heading">
+        <div class="section-grid">
+          <div>
+            <p class="eyebrow">AI Usage</p>
+            <h2 id="ai-usage-heading">Tool and prompt</h2>
+          </div>
+          <div class="ai-usage-panel">
+            <dl>
+              <div>
+                <dt>Tool</dt>
+                <dd>Codex</dd>
+              </div>
+              <div>
+                <dt>Prompt</dt>
+                <dd>
+                  make scholar schedule by referencing
+                  https://www.notion.so/SNU-CLS-Education-1a59fbcc7ff980208315d2ee33053a3e?source=copy_link
+                  notion link
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
@@ -499,12 +694,18 @@
           </div>
           <div class="content-stack">
             <p>
-              Project updates and background are available through GitHub and
-              the CV.
+              You can reach me by email or find my work and updates online.
             </p>
             <ul class="contact-list">
-              <li><a href="https://github.com/newnyon">GitHub</a></li>
-              <li><a href="assets/cv.pdf">CV PDF</a></li>
+              <li>
+                <a href="mailto:newnyon@snu.ac.kr">newnyon@snu.ac.kr</a>
+              </li>
+              <li>
+                <a href="https://github.com/newnyon-code">github.com/newnyon-code</a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/new_nyon/">@new_nyon</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -512,7 +713,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; 2026 newnyon.</p>
+      <p>&copy; 2026 Younhyun Kim.</p>
     </footer>
   </body>
 </html>
